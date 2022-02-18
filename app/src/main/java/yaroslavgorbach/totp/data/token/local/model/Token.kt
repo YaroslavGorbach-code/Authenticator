@@ -20,7 +20,7 @@ data class Token(
     val period: Int = 30,
 ) {
     private val millisUntilNextUpdate: Long
-        get() = (period * 1000) - System.currentTimeMillis() % (period * 1000)
+        get() = (period * 1000) - (System.currentTimeMillis()) % (period * 1000)
 
     val secretBytes: ByteArray
         get() = Base32().decode(secret)
@@ -29,7 +29,7 @@ data class Token(
         get() = TokenFormatter.getCode(this, 3)
 
     @DelicateCoroutinesApi
-    val timerTillNextCode = TimerCountDown(coroutineScope = GlobalScope, millisInFuture = 30000).startTimer()
+    val timerTillNextCode = TimerCountDown(coroutineScope = GlobalScope, millisInFuture = millisUntilNextUpdate).startTimer()
 
     companion object {
         val Test = Token(
