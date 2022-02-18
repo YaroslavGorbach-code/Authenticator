@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import kotlinx.coroutines.InternalCoroutinesApi
+import yaroslavgorbach.totp.feature.tokens.ui.TokensUi
 
 sealed class Screen(val route: String) {
     object Tokens : Screen("Tokens")
@@ -37,14 +38,14 @@ internal fun AppNavigation(
         startDestination = Screen.Tokens.route,
         modifier = modifier,
     ) {
-        addExercisesTopLevel(navController)
+        addTokensTopLevel(navController)
     }
 }
 
 @InternalCoroutinesApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
-private fun NavGraphBuilder.addExercisesTopLevel(
+private fun NavGraphBuilder.addTokensTopLevel(
     navController: NavController,
 ) {
     navigation(
@@ -61,6 +62,6 @@ private fun NavGraphBuilder.addTokens(
     root: Screen,
 ) {
     composable(LeafScreen.Tokens.createRoute(root)) {
-
+        TokensUi()
     }
 }

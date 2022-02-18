@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class TimerCountDown(private val coroutineScope: CoroutineScope, private val millisInFuture: Long, countDownInterval: Long) :
+class TimerCountDown(private val coroutineScope: CoroutineScope, private val millisInFuture: Long, countDownInterval: Long = ONE_SECOND) :
     CountDownTimer(millisInFuture, countDownInterval) {
 
     companion object {
@@ -35,6 +35,11 @@ class TimerCountDown(private val coroutineScope: CoroutineScope, private val mil
 
             _state.emit(TimerState.Tick(millisUntilFinished, "$minutes:$seconds", progress))
         }
+    }
+
+    fun startTimer(): TimerCountDown {
+        start()
+        return this
     }
 
     override fun onFinish() {

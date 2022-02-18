@@ -1,4 +1,4 @@
-package yaroslavgorbach.reaction.feature.common.ui.theme
+package yaroslavgorbach.totp.feature.common.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

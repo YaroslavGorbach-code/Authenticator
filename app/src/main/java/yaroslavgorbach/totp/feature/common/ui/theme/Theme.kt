@@ -6,7 +6,6 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import yaroslavgorbach.reaction.feature.common.ui.theme.*
 
 private val DarkColorPalette = darkColors(
     primary = Red200,
@@ -31,7 +30,7 @@ private val LightColorPalette = lightColors(
 )
 
 @Composable
-fun AuthenticatorTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun AuthenticatorTheme(isDarkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (isDarkTheme) {
         DarkColorPalette
     } else {
