@@ -3,9 +3,11 @@ package yaroslavgorbach.totp.data.token.local.model
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.binary.Base32
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import yaroslavgorbach.totp.utill.TimerCountDown
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.shareIn
 import yaroslavgorbach.totp.utill.TokenFormatter
 
 data class Token(
@@ -19,17 +21,21 @@ data class Token(
     val counter: Long,
     val period: Int = 30,
 ) {
-    private val millisUntilNextUpdate: Long
-        get() = (period * 1000) - (System.currentTimeMillis()) % (period * 1000)
+    val progress: SharedFlow<Float> = flow {
+        while (true) {
+            val p = (period * 1000).toLong()
+            val result = p - (System.currentTimeMillis() % p)
+            val progress = (100 * (result.toFloat() / (period * 1000))) / 100
+            emit(progress)
+            delay(100)
+        }
+    }.shareIn(scope = GlobalScope, started = SharingStarted.Eagerly, 0)
 
     val secretBytes: ByteArray
         get() = Base32().decode(secret)
 
     val formattedCode: String
         get() = TokenFormatter.getCode(this, 3)
-
-    @DelicateCoroutinesApi
-    val timerTillNextCode = TimerCountDown(coroutineScope = GlobalScope, millisInFuture = millisUntilNextUpdate).startTimer()
 
     companion object {
         val Test = Token(
@@ -38,8 +44,8 @@ data class Token(
             issuer = "",
             label = "Test",
             algorithm = HashAlgorithm.SHA1,
-            secret = "",
-            digits = 0,
+            secret = "JBSWY3DPEHPK3PXP",
+            digits = 6,
             counter = 0,
             period = 30
         )
