@@ -24,10 +24,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val navController = rememberNavController()
             AuthenticatorTheme {
                 Surface {
-                    AppNavigation(navController = navController)
+                    AppNavigation(navController = rememberNavController())
                 }
             }
         }

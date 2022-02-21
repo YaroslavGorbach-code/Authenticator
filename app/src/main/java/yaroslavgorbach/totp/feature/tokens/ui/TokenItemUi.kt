@@ -1,9 +1,6 @@
 package yaroslavgorbach.totp.feature.tokens.ui
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -14,23 +11,50 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.DelicateCoroutinesApi
 import yaroslavgorbach.totp.data.token.local.model.Token
-
 
 @Composable
 fun TokenItem(token: Token) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
-            .padding(8.dp)
+            .wrapContentHeight()
+            .padding(16.dp)
     ) {
-        CircularProgressIndicator(
-            progress = token.progress.collectAsState(initial = 0f).value,
-            modifier = Modifier.align(alignment = Alignment.CenterStart)
-        )
-        Text(text = token.formattedCode, modifier = Modifier.align(alignment = Alignment.Center))
+        Column {
+            Text(
+                text = token.label,
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.overline,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Row(modifier = Modifier.wrapContentHeight().padding(top = 8.dp)) {
+                CircularProgressIndicator(
+                    progress = token.progress.collectAsState(initial = 0f).value,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .align(Alignment.CenterVertically),
+                    strokeWidth = 2.dp
+                )
+
+                Text(
+                    text = token.formattedCode,
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .padding(start = 16.dp),
+                    color = MaterialTheme.colors.primary,
+                    fontSize = 18.sp,
+                    style = MaterialTheme.typography.overline
+                )
+            }
+        }
+
     }
 }
 
