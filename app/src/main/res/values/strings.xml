@@ -2,4 +2,8 @@
     <string name="app_name">Authenticator</string>
     <string name="add_manualy">Ввести ключ настройки</string>
     <string name="add_by_qr_code">Сканировать QR-code</string>
+    <string name="add">Добавить</string>
+    <string name="enter_key">Введите ключ</string>
+    <string name="enter_label">Название аккаунта</string>
+    <string name="add_secret_dialog_title">Введите данные аккаунта</string>
 </resources>

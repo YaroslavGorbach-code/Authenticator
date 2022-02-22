@@ -1,23 +1,28 @@
 package yaroslavgorbach.totp.data.token.local.model
 
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.commons.codec.binary.Base32
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import yaroslavgorbach.totp.utill.TokenFormatter
+import java.util.*
 
+@Entity
 data class Token(
-    val id: Long,
-    val ordinal: Long,
-    val issuer: String?,
+    @PrimaryKey(autoGenerate = true)
+    val id: Long = 0,
+    val date: Date = Date(),
     val label: String,
-    val algorithm: HashAlgorithm,
+    val algorithm: HashAlgorithm = HashAlgorithm.SHA1,
     val secret: String,
-    val digits: Int,
-    val counter: Long,
+    val digits: Int = 6,
     val period: Int = 30,
 ) {
+    @Ignore
     val progress: SharedFlow<Float> = flow {
         while (true) {
             val p = (period * 1000).toLong()
@@ -37,13 +42,11 @@ data class Token(
     companion object {
         val Test = Token(
             id = -1,
-            ordinal = 1,
-            issuer = "",
+            date = Date(),
             label = "Test",
             algorithm = HashAlgorithm.SHA1,
             secret = "JBSWY3DPEHPK3PXP",
             digits = 6,
-            counter = 0,
             period = 30
         )
     }

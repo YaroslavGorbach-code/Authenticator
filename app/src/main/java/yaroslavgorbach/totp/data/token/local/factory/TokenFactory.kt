@@ -53,31 +53,14 @@ object TokenFactory {
 
             return Token(
                 id = 0,
-                ordinal = -System.currentTimeMillis(), // One way to make the token to the top of the list
-                issuer = issuer,
                 label = label,
                 algorithm = HashAlgorithm.SHA1,
                 secret = secret,
                 digits = digits,
-                counter = counter,
                 period = period,
             )
         }
         throw IllegalArgumentException("URI is not valid")
-    }
-
-    fun create(label: String, algorithm: HashAlgorithm, secret: String, digits: Int, counter: Long, period: Int): Token {
-        return Token(
-            id = 0,
-            ordinal = -System.currentTimeMillis(), // One way to make the token to the top of the list
-            label = label,
-            algorithm = algorithm,
-            secret = secret,
-            digits = digits,
-            counter = counter,
-            period = period,
-            issuer = null
-        )
     }
 
     private inline fun doOnValidTotpUri(uri: Uri, onValid: () -> Unit) {

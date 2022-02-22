@@ -59,7 +59,8 @@ internal fun TokensUi(
                 ShowAddTokenDialog(onDismissRequest = {
                     onMessageShown(uiMessage.id)
                 }, onAddClick = { label, secret ->
-
+                    actioner(TokensActions.AddToken(label = label, key = secret))
+                    onMessageShown(uiMessage.id)
                 })
             }
         }
@@ -69,6 +70,7 @@ internal fun TokensUi(
         LazyColumn(Modifier.fillMaxSize()) {
             items(state.tokens) { token ->
                 TokenItem(token = token)
+
                 Spacer(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -88,6 +90,7 @@ internal fun TokensUi(
             if (state.isAddTokenStateActive) {
                 ShowAddTokenVariants {
                     actioner(TokensActions.ShowAddTokensDialog)
+                    actioner(TokensActions.ChangeAddTokenUiState(false))
                 }
             }
 

@@ -61,4 +61,5 @@ object TokenFormatter {
 
         return numberFormat.format(token.toLong())
     }
+
 }

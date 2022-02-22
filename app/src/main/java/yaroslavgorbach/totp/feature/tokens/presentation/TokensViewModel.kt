@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.launch
+import yaroslavgorbach.totp.business.token.AddTokenInteractor
 import yaroslavgorbach.totp.business.token.ObserveTokensInteractor
 import yaroslavgorbach.totp.feature.tokens.model.TokensActions
 import yaroslavgorbach.totp.feature.tokens.model.TokensUiMassage
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TokensViewModel @Inject constructor(
-    observeTokensInteractor: ObserveTokensInteractor
+    observeTokensInteractor: ObserveTokensInteractor,
+    private val addTokenInteractor: AddTokenInteractor
 ) : ViewModel() {
     private val pendingActions = MutableSharedFlow<TokensActions>()
 
@@ -48,8 +50,13 @@ class TokensViewModel @Inject constructor(
                     is TokensActions.ChangeAddTokenUiState -> {
                         isAddTokenUiStateActive.emit(action.isActive)
                     }
+
                     is TokensActions.ShowAddTokensDialog -> {
                         uiMessageManager.emitMessage(UiMessage(TokensUiMassage.ShowAddTokenDialog))
+                    }
+
+                    is TokensActions.AddToken -> {
+                        addTokenInteractor.invoke(label = action.label, secret = action.key)
                     }
                 }
             }
